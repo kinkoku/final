@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>CHUTIMA FINAL</title>
+	<meta name="Final" content="Final">
+	<script src="js/aframe-master.1.0.4.min.js"></script>
+	<script src="js/aframe-environment-component.min.js"></script>
+	<script src="js/extended-wasd-controls.js"></script>
+	<script src="js/aframe-spritesheet-animation.js"></script>
+	<script src="js/aframe-look-at-component.js"></script>
+	<script src="js/aframe-render-order-component.min.js"></script>
+</head>
+
+<body>
+
+<script>
+AFRAME.registerComponent("boundary",
+{
+	init: function()
+	{
+
+	},
+
+	tick: function(time, deltaTime)
+	{
+		if (this.el.object3D.position.z < -2.5)
+			this.el.object3D.position.z = -2.5;
+		if (this.el.object3D.position.z >  2.5)
+			this.el.object3D.position.z =  2.5;
+		if (this.el.object3D.position.x < -2.5)
+			this.el.object3D.position.x = -2.5;
+		if (this.el.object3D.position.x >  2.5)
+			this.el.object3D.position.x =  2.5;
+
+	}
+});
+       
+</script>
+<!-- 
+	disable press "F" to enter fullscreen mode.
+ -->
+<a-scene environment="preset: default; lighting: none;" 
+	keyboard-shortcuts="enterVR: false;">
+	
+	<!-- Dim ambient lighting.  -->
+	<a-light type="ambient" color="#222222"></a-light>
+	<a-light type="point" color="#CCCCCC" position="0 3 0"></a-light>
+	
+	<a-assets timeout="10000">
+		<img id="crate" 	src="images/crate.jpg" />
+		<img id="grid" 		src="images/color-grid.png" />
+		<img id="wood" 		src="images/tile2.jpg" />
+		<img id="plaster"	src="images/vic.jpg" />
+		<img id="swift" 	src="images/photos/bag.png" />
+		<img id="sasi" 	src="images/photos/ss.jpg" />
+		<img id="nerd" 	src="images/photos/station1.jpg" />
+		<img id="pn" 	src="images/photos/paknam2.jpg" />
+		<a-asset-item id="table" src="models/table.glb"></a-asset-item>
+		<a-asset-item id="picture" src="models/picture.glb"></a-asset-item>
+		<a-asset-item id="pagoda" src="models/pagoda.glb"></a-asset-item>
+
+
+
+		<!-- <video id="video" loop="true" src="video/sintel.mp4"></video> -->
+	</a-assets>
+
+
+	<a-assets>
+    	<img id="crate" src="images/crate.jpg">
+    	<img id="box-label" src="images/box-label.png">
+    	<img id="glow" src="images/glow.png">
+    	<img id="grid" src="images/color-grid.png">
+    	<img id="sheet" src="images/spritesheet-fireball.png"/>
+    	<img id="sheet2" src="images/fireball-up.png"/>
+  	</a-assets>
+	
+	<!-- simulated glow on a sphere + animated pulse effect -->
+	<a-entity id="glowPulse" position="-1 1.6 -5"
+		animation__spin="property: rotation; from: 0 0 0; to: 0 360 0; dur: 4000; loop: true; easing: linear;">
+		<a-sphere radius="0.5" material="src: #grid; emissive: yellow; emissive-intensity: 0.5;"
+		animation__pulse="property: material.emissiveIntensity; from: 0.5; to: 0.0; dur: 1000; loop: true; dir: alternate; easing: linear;"></a-sphere>
+		<a-image width="2" height="2" src="#glow" look-at="#player" color="yellow" material="transparent: true; opacity: 1.0; alphaTest: 0.01;"
+		animation__pulse="property: material.opacity; from: 1.0; to: 0.0; dur: 1000; loop: true; dir: alternate; easing: linear;"></a-image>
+	</a-entity>
+
+
+	<!--
+		create a camera entity
+	-->
+	<a-entity id="camera" camera
+		position="0 1.6 0"
+		look-controls wasd-controls="acceleration: 4;" boundary>
+	</a-entity>
+
+	
+	<!-- floor -->  
+	<a-box width="6.5" depth="6.5" height="0.1" scale="2 2 2" position="0 0 0" material="src:#wood; repeat:6 6;" ></a-box>
+
+
+	<!-- walls -->
+	<a-box width="24" depth="0.1" height="7" position="0 1.5 -3.1" material="src:#plaster; repeat:12 4;"></a-box>
+
+	<a-box width="23" depth="0.1" height="7" position="0 1.5 3.1" material="src:#plaster; repeat: 12 4;"></a-box>
+
+	<a-box width="24" depth="0.1" height="7" position="3.1 1.5 0" rotation="0 90 0" material="src:#plaster; repeat: 12 4; "></a-box>
+
+	<a-box width="24" depth="0.1" height="7" position="-3.1 1.5 0" rotation="0 90 0" material="src:#plaster; repeat: 12 4;"></a-box>
+
+	<!-- artwork -->
+	
+	<a-entity position="0 1.2 -3" rotation="0 270 0" scale="1 1 1 " gltf-model="#picture">
+		<a-plane position="0.02 0.68 0" rotation="0 90 0" material="shader:flat; src:#swift; side:double;"></a-plane>
+	</a-entity>
+
+	
+	<a-entity position="3 1.2 0" rotation="0 180 0" scale="1 1 1 " gltf-model="#picture">
+		<a-plane position="0.02 0.68 0" rotation="0 90 0" material="shader:flat; src:#sasi; side:double;"></a-plane>
+	</a-entity>
+
+	<a-entity position="-3 1.2 0" rotation="0 0 0" scale="1 1 1" gltf-model="#picture">
+		<a-plane position="0.02 0.68 0" rotation="0 90 0" material="shader:flat; src:#nerd; side:double;"></a-plane>
+	</a-entity>
+
+	<a-entity position="0 1.2 3" rotation="0 90 0" scale="1 1 1" gltf-model="#picture">
+		<a-plane position="0.02 0.68 0" rotation="0 90 0" material="shader:flat; src:#pn; side:double;"></a-plane>
+	</a-entity>
+
+	<!-- table display -->
+	<!--<a-entity position="-2.5 0 -2.5" color="#0000FF" gltf-model="#table">
+	</a-entity>
+
+	<a-entity position="-2.5 0.9 -2.5" scale="0.1 0.1 0.1" color="#0000FF" gltf-model="#pagoda">
+	</a-entity>-->
+
+</a-scene>
+
+</body>
+</html>
