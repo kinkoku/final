@@ -1,2 +1,2 @@
-# finall
+# final
 art-gallery
